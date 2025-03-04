@@ -1,0 +1,146 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_BOOKS 100
+#define MAX_MEMBERS 100
+
+typedef struct {
+    int id;
+    char title[100];
+    char author[100];
+} Book;
+
+typedef struct {
+    int id;
+    char name[100];
+} Member;
+
+Book books[MAX_BOOKS];
+Member members[MAX_MEMBERS];
+int book_count = 0, member_count = 0;
+
+void add_book(int id, char *title, char *author) {
+    if (book_count < MAX_BOOKS) {
+        books[book_count].id = id;
+        strcpy(books[book_count].title, title);
+        strcpy(books[book_count].author, author);
+        book_count++;
+        printf("Book added successfully!\n");
+    } else {
+        printf("Library is full!\n");
+    }
+}
+
+void remove_book(int id) {
+    for (int i = 0; i < book_count; i++) {
+        if (books[i].id == id) {
+            books[i] = books[book_count - 1];
+            book_count--;
+            printf("Book removed successfully!\n");
+            return;
+        }
+    }
+    printf("Book not found!\n");
+}
+
+void list_books() {
+    if (book_count == 0) {
+        printf("No books available.\n");
+    } else {
+        for (int i = 0; i < book_count; i++) {
+            printf("ID: %d, Title: %s, Author: %s\n", books[i].id, books[i].title, books[i].author);
+        }
+    }
+}
+
+void add_member(int id, char *name) {
+    if (member_count < MAX_MEMBERS) {
+        members[member_count].id = id;
+        strcpy(members[member_count].name, name);
+        member_count++;
+        printf("Member added successfully!\n");
+    } else {
+        printf("Member limit reached!\n");
+    }
+}
+
+void remove_member(int id) {
+    for (int i = 0; i < member_count; i++) {
+        if (members[i].id == id) {
+            members[i] = members[member_count - 1];
+            member_count--;
+            printf("Member removed successfully!\n");
+            return;
+        }
+    }
+    printf("Member not found!\n");
+}
+
+void list_members() {
+    if (member_count == 0) {
+        printf("No members registered.\n");
+    } else {
+        for (int i = 0; i < member_count; i++) {
+            printf("ID: %d, Name: %s\n", members[i].id, members[i].name);
+        }
+    }
+}
+
+int main() {
+    int choice, id;
+    char title[100], author[100], name[100];
+    
+    while (1) {
+        printf("\nLibrary Management System\n");
+        printf("1. Add Book\n");
+        printf("2. Remove Book\n");
+        printf("3. List Books\n");
+        printf("4. Add Member\n");
+        printf("5. Remove Member\n");
+        printf("6. List Members\n");
+        printf("7. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1:
+                printf("Enter book ID: ");
+                scanf("%d", &id);
+                printf("Enter book title: ");
+                scanf(" %[^"]", title);
+                printf("Enter book author: ");
+                scanf(" %[^"]", author);
+                add_book(id, title, author);
+                break;
+            case 2:
+                printf("Enter book ID to remove: ");
+                scanf("%d", &id);
+                remove_book(id);
+                break;
+            case 3:
+                list_books();
+                break;
+            case 4:
+                printf("Enter member ID: ");
+                scanf("%d", &id);
+                printf("Enter member name: ");
+                scanf(" %[^"]", name);
+                add_member(id, name);
+                break;
+            case 5:
+                printf("Enter member ID to remove: ");
+                scanf("%d", &id);
+                remove_member(id);
+                break;
+            case 6:
+                list_members();
+                break;
+            case 7:
+                printf("Exiting the system...\n");
+                return 0;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+}
